@@ -3,6 +3,9 @@ function love.load()
     love.window.setMode(800, 800, {
         resizable = false
     })
+
+    love.window.setTitle("Kuhlmanns LuaLove")
+
     background = love.graphics.newImage("assets/background.png")
     targetImage = love.graphics.newImage("assets/target.png")
     target = {}
@@ -84,7 +87,7 @@ function love.mousepressed(x, y, button, istouch, pressed)
             score = score + 1
 
             target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
-            target.y = math.random(target.radius, love.graphics.getHeight() - (target.radius+100))
+            target.y = math.random(target.radius, love.graphics.getHeight() - (target.radius + 100))
 
             moveX = math.random(-(maxSpeed), maxSpeed)
             moveY = math.random(-(maxSpeed), maxSpeed)
