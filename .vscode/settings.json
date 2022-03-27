@@ -12,6 +12,14 @@
         "blue",
         "score",
         "gamefont",
-        "distanceBetween"
+        "distanceBetween",
+        "highscore",
+        "background",
+        "targetImage",
+        "moveX",
+        "moveY",
+        "scalFactor",
+        "impossibility",
+        "maxSpeed"
     ]
 }

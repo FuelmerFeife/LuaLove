@@ -1,32 +1,61 @@
 function love.load()
+
+    love.window.setMode(800, 800, {
+        resizable = false
+    })
+    background = love.graphics.newImage("assets/background.png")
+    targetImage = love.graphics.newImage("assets/target.png")
     target = {}
     target.x = 300
     target.y = 300
     target.radius = 50
 
-    red = math.random(0.1, 0.9)
-    green = math.random(0.1, 0.9)
-    blue = math.random(0.1, 0.9)
+    moveX = math.random(-5, 5)
+    moveY = math.random(-5, 5)
+    scalFactor = 1
 
     score = 0
     highscore = 0
+
+    impossibility = 0.08
+    maxSpeed = 10
 
     gamefont = love.graphics.newFont(40)
 
 end
 
 function love.update(dt)
-   
+
+    if (target.x - target.radius) < 0 and moveX < 0 then
+        moveX = moveX * (-1)
+    end
+
+    if (target.x + target.radius) > 800 and moveX > 0 then
+        moveX = moveX * (-1)
+    end
+
+    if (target.y - target.radius) < 0 and moveY < 0 then
+        moveY = moveY * (-1)
+    end
+
+    if (target.y + target.radius) > 700 and moveY > 0 then
+        moveY = moveY * (-1)
+    end
+
+    target.x = target.x + moveX
+    target.y = target.y + moveY
+
     if score > highscore then
-        highscore=score
+        highscore = score
     end
 
     if target.radius > 0 then
-        target.radius = target.radius - 0.5
+        target.radius = target.radius - impossibility
+        scalFactor = target.radius / 50
     else
         love.graphics.setFont(love.graphics.newFont(400))
         love.graphics.print(score, 200, 200)
-        love.event.wait(500)
+        love.event.wait()
 
         score = 0
         target.radius = 50
@@ -35,14 +64,14 @@ end
 
 function love.draw()
 
-    love.graphics.setColor(red, green, blue)
-    love.graphics.circle("fill", target.x, target.y, target.radius)
+    love.graphics.draw(background)
 
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.draw(targetImage, target.x - target.radius, target.y - target.radius, 0, scalFactor)
+    love.graphics.circle("line", target.x, target.y, target.radius)
+
     love.graphics.setFont(gamefont)
     love.graphics.print(score, 0, 0)
 
-    love.graphics.setColor(1, 0, 0)
     love.graphics.setFont(gamefont)
     love.graphics.print(highscore, 60, 0)
 
@@ -53,11 +82,13 @@ function love.mousepressed(x, y, button, istouch, pressed)
         local mousToTarget = distanceBetween(x, target.x, y, target.y)
         if mousToTarget < target.radius then
             score = score + 1
-            red = math.random(0.1, 0.9)
-            green = math.random(0.1, 0.9)
-            blue = math.random(0.1, 0.9)
+
             target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)
-            target.y = math.random(target.radius, love.graphics.getHeight() - target.radius)
+            target.y = math.random(target.radius, love.graphics.getHeight() - (target.radius+100))
+
+            moveX = math.random(-(maxSpeed), maxSpeed)
+            moveY = math.random(-(maxSpeed), maxSpeed)
+
             if (target.radius * 2) < 50 then
                 target.radius = target.radius + target.radius
             else
