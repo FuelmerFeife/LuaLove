@@ -3,11 +3,14 @@ function love.load()
     love.window.setMode(800, 800, {
         resizable = false
     })
-
     love.window.setTitle("Kuhlmanns LuaLove")
 
     background = love.graphics.newImage("assets/background.png")
     targetImage = love.graphics.newImage("assets/target.png")
+
+    shootSound = love.audio.newSource("sounds/laserShoot.wav", "stream")
+    hitSound = love.audio.newSource("sounds/hit.wav", "stream")
+
     target = {}
     target.x = 300
     target.y = 300
@@ -82,8 +85,10 @@ end
 
 function love.mousepressed(x, y, button, istouch, pressed)
     if button == 1 then
+        love.audio.play(shootSound)
         local mousToTarget = distanceBetween(x, target.x, y, target.y)
         if mousToTarget < target.radius then
+            love.audio.play(hitSound)
             score = score + 1
 
             target.x = math.random(target.radius, love.graphics.getWidth() - target.radius)

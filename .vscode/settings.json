@@ -20,6 +20,8 @@
         "moveY",
         "scalFactor",
         "impossibility",
-        "maxSpeed"
+        "maxSpeed",
+        "shootSound",
+        "hitSound"
     ]
 }
