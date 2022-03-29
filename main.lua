@@ -1,16 +1,46 @@
+Gamestate = require 'libraries.gamestate'
+local menu = {}
+local game = {}
+
 function love.load()
+    Gamestate.registerEvents()
+    anim8 = require 'libraries/anim8'
 
     love.window.setMode(800, 800, {
         resizable = false
     })
     love.window.setTitle("LuaLove")
 
+    gamefont = love.graphics.newFont(40)
+
+    if love.filesystem.read("data.sav") == nil then
+        highscore = 0
+        love.filesystem.write("data.sav", highscore)
+    else
+        highscore = love.filesystem.read("data.sav")
+    end
+
+    Gamestate.switch(menu)
+end
+
+function menu:draw()
+    love.graphics.setFont(gamefont)
+    love.graphics.print("Press Enter to continue", 170, 400)
+end
+
+function menu:keyreleased(key, code)
+    if key == 'return' then
+        Gamestate.switch(game)
+    end
+end
+
+function game:enter()
+
     background = love.graphics.newImage("assets/background.png")
     targetImage = love.graphics.newImage("assets/target.png")
 
     shootSound = love.audio.newSource("sounds/laserShoot.wav", "stream")
     hitSound = love.audio.newSource("sounds/hit.wav", "stream")
-
     target = {}
     target.x = 300
     target.y = 300
@@ -21,16 +51,15 @@ function love.load()
     scalFactor = 1
 
     score = 0
-    highscore = 0
+    highscore = love.filesystem.read("data.sav")
+    highscore = tonumber(highscore)
 
     impossibility = 0.08
     maxSpeed = 10
 
-    gamefont = love.graphics.newFont(40)
-
 end
 
-function love.update(dt)
+function game:update(dt)
 
     if (target.x - target.radius) < 0 and moveX < 0 then
         moveX = moveX * (-1)
@@ -53,23 +82,19 @@ function love.update(dt)
 
     if score > highscore then
         highscore = score
+        love.filesystem.write("data.sav", highscore)
     end
 
     if target.radius > 0 then
         target.radius = target.radius - impossibility
         scalFactor = target.radius / 50
     else
-        love.graphics.setFont(love.graphics.newFont(400))
-        love.graphics.print(score, 200, 200)
-        love.event.wait()
-
-        score = 0
-        target.radius = 50
+        love.filesystem.write("data.sav", highscore)
+        Gamestate.switch(menu)
     end
 end
 
-function love.draw()
-
+function game:draw()
     love.graphics.draw(background)
 
     love.graphics.draw(targetImage, target.x - target.radius, target.y - target.radius, 0, scalFactor)
@@ -77,13 +102,10 @@ function love.draw()
 
     love.graphics.setFont(gamefont)
     love.graphics.print(score, 0, 0)
-
-    love.graphics.setFont(gamefont)
     love.graphics.print(highscore, 60, 0)
-
 end
 
-function love.mousepressed(x, y, button, istouch, pressed)
+function game:mousepressed(x, y, button, istouch, pressed)
     if button == 1 then
         love.audio.play(shootSound)
         local mousToTarget = distanceBetween(x, target.x, y, target.y)

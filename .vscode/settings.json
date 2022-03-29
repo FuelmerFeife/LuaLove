@@ -22,6 +22,7 @@
         "impossibility",
         "maxSpeed",
         "shootSound",
-        "hitSound"
+        "hitSound",
+        "anim8"
     ]
 }
