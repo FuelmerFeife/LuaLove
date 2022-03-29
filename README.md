@@ -29,7 +29,7 @@ Coming soon!
 
 
 ## Used By
-This project is used by the nobody 🫣
+This project is used by nobody 🫣
 
 
 ## 🚀 About the Author
