@@ -3,7 +3,7 @@ function love.load()
     love.window.setMode(800, 800, {
         resizable = false
     })
-    love.window.setTitle("Kuhlmanns LuaLove")
+    love.window.setTitle("LuaLove")
 
     background = love.graphics.newImage("assets/background.png")
     targetImage = love.graphics.newImage("assets/target.png")
