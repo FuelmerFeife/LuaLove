@@ -19,6 +19,10 @@ Feel free to help 💪
 ![LuaLove](https://ibb.co/rbw235M)
 ![LuaLove2](https://ibb.co/Bc1pjR3)
 
+![LuaLove](https://raw.githubusercontent.com/FuelmerFeife/LuaLove/main/assets/screenshots/LuaLove.png)
+![LuaLove2](https://raw.githubusercontent.com/FuelmerFeife/LuaLove/main/assets/screenshots/LuaLove%20V0.1.png)
+
+
 
 ## Demo
 Coming soon!
