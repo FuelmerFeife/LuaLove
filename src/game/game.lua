@@ -1,47 +1,12 @@
-Gamestate = require 'libraries.gamestate'
-local menu = {}
-local game = {}
-local pause = {}
-
-function love.load()
-    Gamestate.registerEvents()
-    anim8 = require 'libraries/anim8'
-
-    love.window.setMode(800, 800, {
-        resizable = false
-    })
-    love.window.setTitle("LuaLove")
-
-    gamefont = love.graphics.newFont(40)
-
-    if love.filesystem.read("data.sav") == nil then
-        highscore = 0
-        love.filesystem.write("data.sav", highscore)
-    else
-        highscore = love.filesystem.read("data.sav")
-    end
-
-    Gamestate.switch(menu)
-end
-
-function menu:draw()
-    love.graphics.setFont(gamefont)
-    love.graphics.print("Press Enter to continue", 170, 400)
-end
-
-function menu:keyreleased(key, code)
-    if key == 'return' then
-        Gamestate.switch(game)
-    end
-end
+game = {}
 
 function game:enter()
 
-    background = love.graphics.newImage("assets/background.png")
-    targetImage = love.graphics.newImage("assets/target.png")
+    background = love.graphics.newImage("/media/img/background.png")
+    targetImage = love.graphics.newImage("/media/img/target.png")
 
-    shootSound = love.audio.newSource("sounds/laserShoot.wav", "stream")
-    hitSound = love.audio.newSource("sounds/hit.wav", "stream")
+    shootSound = love.audio.newSource("/media/sfx/laserShoot.wav", "stream")
+    hitSound = love.audio.newSource("/media/sfx/hit.wav", "stream")
     target = {}
     target.x = 300
     target.y = 300
@@ -139,35 +104,6 @@ function game:keypressed(key)
     end
     if key == 'escape' then
         love.event.quit()
-    end
-end
-
-function pause:enter(from)
-    self.from = from -- record previous state
-end
-
-function pause:draw()
-    local w, h = love.graphics.getWidth(), love.graphics.getHeight()
-    -- draw previous screen
-    self.from:draw()
-
-    -- overlay with pause message
-    love.graphics.setColor(0, 0, 0, 100)
-    love.graphics.rectangle('fill', 0, 0, w, h)
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.printf('PAUSE', 0, h / 2, w, 'center')
-end
-
-function pause:update(dt)
-    -- pauseTimer starts ticking
-    pauseTimer = pauseTimer + dt
-
-    -- wait a moment before checking agian if 'p' is pressed
-    if love.keyboard.isScancodeDown('p') and pauseTimer > 0.3 then
-        -- reset timer
-        pauseTimer = 0
-        -- remove pause gamestate from the stack
-        return Gamestate.pop()
     end
 end
 

@@ -25,6 +25,8 @@
         "hitSound",
         "anim8",
         "pause",
-        "pauseTimer"
+        "pauseTimer",
+        "game",
+        "menu"
     ]
 }
