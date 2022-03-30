@@ -23,6 +23,8 @@
         "maxSpeed",
         "shootSound",
         "hitSound",
-        "anim8"
+        "anim8",
+        "pause",
+        "pauseTimer"
     ]
 }
