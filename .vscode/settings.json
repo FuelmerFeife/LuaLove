@@ -27,6 +27,7 @@
         "pause",
         "pauseTimer",
         "game",
-        "menu"
+        "menu",
+        "cursor"
     ]
 }
