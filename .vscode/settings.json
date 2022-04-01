@@ -28,6 +28,7 @@
         "pauseTimer",
         "game",
         "menu",
-        "cursor"
+        "cursor",
+        "katha"
     ]
 }
