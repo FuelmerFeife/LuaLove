@@ -1,19 +1,22 @@
-Gamestate = require('libraries.gamestate')
 require('game.menu')
 require('game.pause')
 require('game.game')
 
 function love.load()
-    Gamestate.registerEvents()
     anim8 = require 'libraries/anim8'
-    cursor = love.mouse.newCursor("/media/img/curser.png", 0, 0)
-    love.mouse.setCursor(cursor)
-    gamefont = love.graphics.newFont(40)
+    gamestate = require('libraries.gamestate')
+    curser, cursorGame = love.mouse.getSystemCursor("arrow"), love.mouse.newCursor("/media/img/curser.png", 0, 0)
+    gamefont, gamefont2 = love.graphics.newFont(40), love.graphics.newFont(30)
+    backgroundPause = love.graphics.newImage("/media/img/backgroundSW.png")
+    w, h = love.graphics.getWidth(), love.graphics.getHeight()
 
+    love.graphics.setDefaultFilter("nearest", "nearest")
+    gamestate.registerEvents()
+
+    love.window.setTitle("LuaLove")
     love.window.setMode(800, 800, {
         resizable = false
     })
-    love.window.setTitle("LuaLove")
 
     if love.filesystem.read("data.sav") == nil then
         highscore = 0
@@ -22,5 +25,5 @@ function love.load()
         highscore = love.filesystem.read("data.sav")
     end
 
-    Gamestate.switch(menu)
+    gamestate.switch(menu)
 end

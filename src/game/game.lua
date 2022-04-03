@@ -1,10 +1,8 @@
 game = {}
 
 function game:enter()
-
     background = love.graphics.newImage("/media/img/background.png")
     targetImage = love.graphics.newImage("/media/img/target.png")
-    love.graphics.setDefaultFilter("nearest", "nearest")
 
     shootSound = love.audio.newSource("/media/sfx/laserShoot.wav", "stream")
     hitSound = love.audio.newSource("/media/sfx/hit.wav", "stream")
@@ -19,6 +17,7 @@ function game:enter()
     katha.speed = 2
     katha.spriteSheet = love.graphics.newImage('/media/character/katha.png')
     katha.grid = anim8.newGrid(64, 64, katha.spriteSheet:getWidth(), katha.spriteSheet:getHeight())
+
     katha.animations = {}
     katha.animations.left = anim8.newAnimation(katha.grid(('1-9'), 10), 0.2)
     katha.animations.right = anim8.newAnimation(katha.grid(('1-9'), 12), 0.2)
@@ -41,7 +40,7 @@ function game:enter()
     alpaka.animations.right = anim8.newAnimation(alpaka.grid(('1-4'), 4), 0.2)
     alpaka.animations.up = anim8.newAnimation(alpaka.grid(('1-4'), 1), 0.2)
     alpaka.animations.down = anim8.newAnimation(alpaka.grid(('1-4'), 3), 0.2)
-    alpaka.animations.eat = anim8.newAnimation(alpaka.gridEat(('1-4'), 3), 0.2)
+    alpaka.animations.eat = anim8.newAnimation(alpaka.gridEat(('1-4'), 3), 0.5)
     alpaka.anim = alpaka.animations.left
 
     moveX = math.random(-5, 5)
@@ -61,6 +60,7 @@ end
 
 function game:update(dt)
 
+    love.mouse.setCursor(cursorGame)
     local isMoving = false
     isEating = false
 
@@ -135,7 +135,7 @@ function game:update(dt)
         scalFactor = target.radius / 50
     else
         love.filesystem.write("data.sav", highscore)
-        Gamestate.switch(menu)
+        gamestate.switch(menu)
     end
 
     if isMoving == false then
@@ -157,11 +157,11 @@ function game:draw()
     love.graphics.print(score, 0, 0)
     love.graphics.print(highscore, 60, 0)
 
-    katha.anim:draw(katha.spriteSheet, katha.x, katha.y, nil, 1.2)
+    katha.anim:draw(katha.spriteSheet, katha.x, katha.y, nil, 2)
     if isEating == true then
-        alpaka.anim:draw(alpaka.spriteSheetEat, alpaka.x, alpaka.y, nil, 1)
+        alpaka.anim:draw(alpaka.spriteSheetEat, alpaka.x, alpaka.y, nil, 1.2)
     else
-        alpaka.anim:draw(alpaka.spriteSheet, alpaka.x, alpaka.y, nil, 1)
+        alpaka.anim:draw(alpaka.spriteSheet, alpaka.x, alpaka.y, nil, 1.2)
     end
 
 end
@@ -169,7 +169,7 @@ end
 function game:mousepressed(x, y, button, istouch, pressed)
     if button == 1 then
         love.audio.play(shootSound)
-        local mousToTarget = distanceBetween(x, target.x, y, target.y)
+        local mousToTarget = game:distanceBetween(x, target.x, y, target.y)
         if mousToTarget < target.radius then
             love.audio.play(hitSound)
             score = score + 1
@@ -193,14 +193,14 @@ end
 
 function game:keypressed(key)
     if key == 'p' then
-        Gamestate.push(pause)
+        gamestate.push(pause)
     end
     if key == 'escape' then
-        love.event.quit()
+        gamestate.switch(menu)
     end
 end
 
-function distanceBetween(x1, x2, y1, y2)
+function game:distanceBetween(x1, x2, y1, y2)
     return math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
 end
 

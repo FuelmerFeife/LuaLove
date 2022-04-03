@@ -5,11 +5,7 @@
     ],
     "Lua.workspace.checkThirdParty": false,
     "Lua.diagnostics.globals": [
-        "timer",
         "target",
-        "red",
-        "green",
-        "blue",
         "score",
         "gamefont",
         "distanceBetween",
@@ -31,6 +27,12 @@
         "cursor",
         "katha",
         "alpaka",
-        "isEating"
+        "isEating",
+        "gamefont2",
+        "w",
+        "h",
+        "cursorGame",
+        "gamestate",
+        "backgroundPause"
     ]
 }
