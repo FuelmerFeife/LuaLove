@@ -33,6 +33,7 @@
         "h",
         "cursorGame",
         "gamestate",
-        "backgroundPause"
+        "backgroundPause",
+        "curser"
     ]
 }

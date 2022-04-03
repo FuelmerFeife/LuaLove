@@ -13,6 +13,8 @@ Feel free to help 💪
 - Display of the score and high score in the session
 - Sound effects
 - Awesome design
+- Useless player
+- Quota alpaca
 
 
 ## Screenshots
