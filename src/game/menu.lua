@@ -1,7 +1,6 @@
 menu = {}
 
 function menu:draw()
-    love.mouse.setCursor(cursor)
     love.graphics.draw(backgroundPause)
     love.graphics.setFont(gamefont)
     love.graphics.printf("Press enter if you like fun!", 0, (h / 2) + 25, w, 'center')
@@ -11,6 +10,7 @@ end
 
 function menu:keyreleased(key, code)
     if key == 'return' then
+        love.mouse.setCursor(cursorGame)
         gamestate.switch(game)
     end
 end

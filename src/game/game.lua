@@ -1,11 +1,6 @@
 game = {}
 
 function game:enter()
-    background = love.graphics.newImage("/media/img/background.png")
-    targetImage = love.graphics.newImage("/media/img/target.png")
-
-    shootSound = love.audio.newSource("/media/sfx/laserShoot.wav", "stream")
-    hitSound = love.audio.newSource("/media/sfx/hit.wav", "stream")
     target = {}
     target.x = 300
     target.y = 300
@@ -29,6 +24,7 @@ function game:enter()
     alpaka = {}
     alpaka.x = katha.x - 70
     alpaka.y = katha.y + 20
+    alpaka.eating = false
     alpaka.speed = 2
     alpaka.spriteSheet = love.graphics.newImage('/media/character/llama_walk.png')
     alpaka.spriteSheetEat = love.graphics.newImage('/media/character/llama_eat.png')
@@ -53,16 +49,16 @@ function game:enter()
 
     impossibility = 0.08
     maxSpeed = 10
-
     pauseTimer = 0
+
+    love.graphics.setFont(gamefont)
+    background = love.graphics.newImage("/media/img/background.png")
 
 end
 
 function game:update(dt)
-
-    love.mouse.setCursor(cursorGame)
     local isMoving = false
-    isEating = false
+    alpaka.eating = false
 
     if love.keyboard.isDown("left") then
         katha.anim = katha.animations.left
@@ -103,7 +99,7 @@ function game:update(dt)
 
     if isMoving == false and alpaka.y > 580 then
         alpaka.anim = alpaka.animations.eat
-        isEating = true
+        alpaka.eating = true
     end
 
     if (target.x - target.radius) < 0 and moveX < 0 then
@@ -135,12 +131,13 @@ function game:update(dt)
         scalFactor = target.radius / 50
     else
         love.filesystem.write("data.sav", highscore)
+        love.mouse.setCursor(cursor)
         gamestate.switch(menu)
     end
 
     if isMoving == false then
         katha.anim:gotoFrame(1)
-        if isEating == false then
+        if alpaka.eating == false then
             alpaka.anim:gotoFrame(3)
         end
     end
@@ -153,16 +150,16 @@ function game:draw()
     love.graphics.draw(background)
     love.graphics.draw(targetImage, target.x - target.radius, target.y - target.radius, 0, scalFactor)
     love.graphics.circle("line", target.x, target.y, target.radius)
-    love.graphics.setFont(gamefont)
     love.graphics.print(score, 0, 0)
     love.graphics.print(highscore, 60, 0)
 
-    katha.anim:draw(katha.spriteSheet, katha.x, katha.y, nil, 2)
-    if isEating == true then
+    if alpaka.eating == true then
         alpaka.anim:draw(alpaka.spriteSheetEat, alpaka.x, alpaka.y, nil, 1.2)
     else
         alpaka.anim:draw(alpaka.spriteSheet, alpaka.x, alpaka.y, nil, 1.2)
     end
+
+    katha.anim:draw(katha.spriteSheet, katha.x, katha.y, nil, 2)
 
 end
 
@@ -193,9 +190,11 @@ end
 
 function game:keypressed(key)
     if key == 'p' then
+        love.mouse.setCursor(cursor)
         gamestate.push(pause)
     end
     if key == 'escape' then
+        love.mouse.setCursor(cursor)
         gamestate.switch(menu)
     end
 end

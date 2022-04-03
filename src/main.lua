@@ -8,8 +8,10 @@ function love.load()
     curser, cursorGame = love.mouse.getSystemCursor("arrow"), love.mouse.newCursor("/media/img/curser.png", 0, 0)
     gamefont, gamefont2 = love.graphics.newFont(40), love.graphics.newFont(30)
     backgroundPause = love.graphics.newImage("/media/img/backgroundSW.png")
+    targetImage = love.graphics.newImage("/media/img/target.png")
+    shootSound, hitSound = love.audio.newSource("/media/sfx/laserShoot.wav", "stream"),
+        love.audio.newSource("/media/sfx/hit.wav", "stream")
     w, h = love.graphics.getWidth(), love.graphics.getHeight()
-
     love.graphics.setDefaultFilter("nearest", "nearest")
     gamestate.registerEvents()
 
@@ -25,5 +27,6 @@ function love.load()
         highscore = love.filesystem.read("data.sav")
     end
 
+    love.mouse.setCursor(cursor)
     gamestate.switch(menu)
 end
